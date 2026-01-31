@@ -1,20 +1,20 @@
-'1640439821588':
-  sequence:
-  - service: light.turn_off
-    target:
-      entity_id:
-      - light.bedroom_celling_light
-      - light.bedroom_recessed_light
-      - light.bedsidelamp
-      - light.living_room_track_light
-      - light.pendant_light
-      - light.spot_light
-      - light.walkway_light
-      - light.kitchen_light
-      - light.chu_fang_kan_deng
-      - light.balcony_light
-      - light.storeroom_light
-      - light.living_room_celling_light
-  mode: restart
-  alias: 關閉所有電燈
-  icon: mdi:lightbulb-multiple-off
+# '1640439821588':
+#   sequence:
+#   - service: light.turn_off
+#     target:
+#       entity_id:
+#       - light.bedroom_celling_light
+#       - light.bedroom_recessed_light
+#       - light.bedsidelamp
+#       - light.living_room_track_light
+#       - light.pendant_light
+#       - light.spot_light
+#       - light.walkway_light
+#       - light.kitchen_light
+#       - light.chu_fang_kan_deng
+#       - light.balcony_light
+#       - light.storeroom_light
+#       - light.living_room_celling_light
+#   mode: restart
+#   alias: 關閉所有電燈
+#   icon: mdi:lightbulb-multiple-off
