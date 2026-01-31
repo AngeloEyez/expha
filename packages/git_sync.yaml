@@ -1,0 +1,40 @@
+# ///////////////////////////////////////////////////////
+# Package: Git Auto Sync
+# 功能：監控檔案變動並自動推送到 GitHub
+# ///////////////////////////////////////////////////////
+#
+# 1. 在 configuration.yaml 中 homeassistant 中加入 allowlist_external_dirs 設定允許監聽的資料夾
+#     allowlist_external_dirs:
+#        - /config
+# 2. 需要在 Home Assistant 中安裝 folder_watcher Integration
+#
+# ///////////////////////////////////////////////////////
+
+shell_command:
+  git_push_auto: '/bin/bash /config/git_push.sh "Auto-sync from HA Web Interface"'
+
+automation:
+  - id: core-git-push
+    alias: "CORE | 檔案變動自動同步 GitHub"
+    description: "當設定檔變動後，等待 3 分鐘，若無後續變動則上傳"
+    trigger:
+      - platform: event
+        event_type: folder_watcher
+    condition: []
+    action:
+      # --- 防抖 (Debounce) ---
+      # 如果在這 3 分鐘內又有變動，這個自動化會被「重新觸發」
+      # 我們將執行模式設為 restart，這樣計時器就會重新計算
+      - delay: "00:03:00"
+
+      # 執行上傳腳本
+      - service: shell_command.git_push_auto
+        data: {}
+
+      # 推送通知 (請確保你的手機實體名稱正確)
+      - service: notify.notify
+        data:
+          title: "Git 自動備份成功"
+          message: "最新的組態變更已成功推送到 GitHub expha 倉庫。"
+
+    mode: restart

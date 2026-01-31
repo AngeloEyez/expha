@@ -1,5 +1,15 @@
-# Configure a default setup of Home Assistant (frontend, api, etc)
+# 載入HomeAssistant預設的基礎設定 (frontend, api, etc)
 default_config:
+
+homeassistant:
+  customize: !include customize.yaml
+
+  # 啟用 Packages 功能
+  packages: !include_dir_named packages
+
+  # 核心全域設定，不能寫在 Package 裡，必須保留在 configuration.yaml
+  allowlist_external_dirs: # 允許外部目錄 for folder_watcher
+    - /config
 
 # Text to speech
 tts:
@@ -13,11 +23,6 @@ group: !include groups.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 
-homeassistant:
-  customize: !include customize.yaml
-  allowlist_external_dirs: # 允許外部目錄 for folder_watcher
-    - /config
-
 http:
   use_x_forwarded_for: true
   trusted_proxies:
@@ -28,15 +33,6 @@ lovelace:
   resources:
     - url: /local/multiple-entity-row.js?v=4.4.1
       type: module
-
-# ///////////////////////////////////////////////////////
-# 監控 config 資料夾下的檔案變動, 並且自動 git push
-# ///////////////////////////////////////////////////////
-# 啟用 folder_watcher (監控檔案變動)
-
-# 設定 shell_command (連結腳本),建立一個服務讓 automation 可以呼叫
-shell_command:
-  git_push_auto: '/bin/bash /config/git_push.sh "Auto-sync from HA Web Interface"'
 
 light:
   ### 玄關 #################################
