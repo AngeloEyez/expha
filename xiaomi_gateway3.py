@@ -3,9 +3,7 @@ from custom_components.xiaomi_gateway3.core.devices import *
 
 DEVICES = [{
     # 4-key 牆壁開關配置 - Linptech T1 系列
-    26373:
-    4223:
-    23311: ["Linptech", "Quadruple Wall Switch T1", "linp.switch.t2dbw4"],
+    26373: ["Linptech", "Quadruple Wall Switch T1", "linp.switch.t2dbw4"],
     "spec": [
         # 四個開關通道
         BaseConv("switch_1", "switch", mi="2.p.1"),
