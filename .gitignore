@@ -1,5 +1,6 @@
 # 核心隱私檔案
 secrets.yaml
+git_push.sh
 
 # 資料庫與日誌
 *.db
