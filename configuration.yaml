@@ -5,11 +5,11 @@ default_config:
 tts:
   - platform: google_translate
 
-group: !include groups.yaml
-automation:
-  - !include automations.yaml # UI 專用
-  - !include_dir_merge_list automations # 手動專用
+# --- 自動化設定：關鍵修正區 ---
+automation: !include automations.yaml # UI 專用，所有在網頁改的都會存到這裡
+automation manual: !include_dir_merge_list automations # 手動分類的 YAML 放這裡
 
+group: !include groups.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 
