@@ -8,6 +8,7 @@ secrets.yaml
 *.log
 *.log.*
 *.lock
+.ha_run.lock
 
 # 備忘與暫存
 __pycache__/
