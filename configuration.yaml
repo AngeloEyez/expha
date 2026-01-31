@@ -27,6 +27,21 @@ lovelace:
     - url: /local/multiple-entity-row.js?v=4.4.1
       type: module
 
+# ///////////////////////////////////////////////////////
+# 監控 config 資料夾下的檔案變動, 並且自動 git push
+# ///////////////////////////////////////////////////////
+# 啟用 folder_watcher (監控檔案變動)
+folder_watcher:
+  - folder: /config
+    patterns:
+      - "*.yaml"
+      - "*.json"
+      - "*.conf"
+
+# 設定 shell_command (連結腳本),建立一個服務讓 automation 可以呼叫
+shell_command:
+  git_push_auto: '/bin/bash /config/git_push.sh "Auto-sync from HA Web Interface"'
+
 light:
   ### 玄關 #################################
   - platform: switch
