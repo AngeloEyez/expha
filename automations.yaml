@@ -1,0 +1,574 @@
+- id: 0524328688aa429fa8af402b703769eb
+  alias: Lock Test
+  trigger:
+  - platform: state
+    entity_id: sensor.e228af50d523_action
+    to: lock
+  condition:
+  - condition: template
+    value_template: '{{ trigger.to_state.attributes[''action_id''] == 4}}'
+  action:
+  - service: persistent_notification.create
+    data_template:
+      title: Lock is open
+      message: "Opening method: {{ trigger.to_state.attributes['method'] }} \nUser
+        ID: {{ trigger.to_state.attributes['key_id'] }} \nAction ID: {{ trigger.to_state.attributes['action_id']
+        }}\n"
+  mode: restart
+- id: '1640350101551'
+  alias: 儲藏室 門-燈 聯動
+  description: ''
+  trigger:
+  - type: opened
+    platform: device
+    device_id: 53e55baa6f02e2d5907fb29626c0f0d1
+    entity_id: binary_sensor.e4aaec354309_contact
+    domain: binary_sensor
+  - type: not_opened
+    platform: device
+    device_id: 53e55baa6f02e2d5907fb29626c0f0d1
+    entity_id: binary_sensor.e4aaec354309_contact
+    domain: binary_sensor
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - type: is_open
+        condition: device
+        device_id: 53e55baa6f02e2d5907fb29626c0f0d1
+        entity_id: binary_sensor.e4aaec354309_contact
+        domain: binary_sensor
+      sequence:
+      - service: light.turn_on
+        target:
+          entity_id:
+          - light.chu_cang_shi_deng
+        data: {}
+    default:
+    - service: light.turn_off
+      target:
+        entity_id:
+        - light.chu_cang_shi_deng
+      data: {}
+  mode: restart
+- id: '1640351800992'
+  alias: 大門關閉-關玄關燈
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.e228af50d523_action
+    to: lock
+  condition:
+  - condition: template
+    value_template: '{{ trigger.to_state.attributes[''action_id''] == 1}}'
+  action:
+  - delay:
+      hours: 0
+      minutes: 3
+      seconds: 0
+      milliseconds: 0
+  - service: light.turn_off
+    target:
+      entity_id: light.entryway_light
+  mode: restart
+- id: '1640353743986'
+  alias: 大門從外打開-開燈
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.e228af50d523_action
+    to: lock
+  condition:
+  - condition: template
+    value_template: '{{ trigger.to_state.attributes[''action_id''] == 0}}'
+  action:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: 500
+  - service: light.turn_on
+    target:
+      entity_id: light.entryway_light
+    data: {}
+  mode: restart
+- id: '1640439262774'
+  alias: 關閉所有電燈 按鈕動作
+  description: ''
+  trigger:
+  - platform: device
+    device_id: 4615f45210087836ebe74fee2431cc8f
+    domain: xiaomi_gateway3
+    type: action
+    id: TurnOffAllLight
+    state: single
+  - platform: device
+    type: changed_states
+    device_id: 72de1226879d49d0e16175fec30be2b6
+    entity_id: switch.28d12723480c_channel_3
+    domain: switch
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: TurnOffAllLight
+      sequence:
+      - service: homeassistant.turn_off
+        target:
+          entity_id: group.homelights
+        data: {}
+    default:
+    - service: homeassistant.turn_off
+      target:
+        entity_id: group.homelightsexcludeentryway
+      data: {}
+  mode: restart
+- id: '1683450231179'
+  alias: 次臥開關燈
+  description: ''
+  triggers:
+  - device_id: d76c0a45cac78dc54a4fd36ae4ce751b
+    domain: xiaomi_gateway3
+    type: action
+    id: SingleClick
+    state: single
+    trigger: device
+  - device_id: d76c0a45cac78dc54a4fd36ae4ce751b
+    domain: xiaomi_gateway3
+    type: action
+    id: DoubleClick
+    state: double
+    trigger: device
+  - device_id: d76c0a45cac78dc54a4fd36ae4ce751b
+    domain: xiaomi_gateway3
+    type: action
+    id: Triple
+    state: triple
+    trigger: device
+  conditions: []
+  actions:
+  - if:
+    - condition: trigger
+      id:
+      - SingleClick
+    then:
+    - if:
+      - condition: device
+        type: is_on
+        device_id: f97f4ed86cda87d80ecd8bef08c14e23
+        entity_id: 503c6763e4a5a8c61b4f33eee40dd3e8
+        domain: light
+      then:
+      - data: {}
+        target:
+          device_id:
+          - fe10d6fbd8fea654e0a804b8df37355e
+          - 82905c77b5a4913bb0d18519a267bcbe
+          - f97f4ed86cda87d80ecd8bef08c14e23
+        action: light.turn_off
+      else:
+      - data:
+          effect: Day
+          brightness_pct: 95
+        target:
+          device_id:
+          - fe10d6fbd8fea654e0a804b8df37355e
+          - 82905c77b5a4913bb0d18519a267bcbe
+          - f97f4ed86cda87d80ecd8bef08c14e23
+        action: light.turn_on
+  - if:
+    - condition: trigger
+      id:
+      - DoubleClick
+    then:
+    - if:
+      - condition: state
+        entity_id: light.mismartledceilinglight450_c087
+        attribute: color_mode
+        state: '2'
+      then:
+      - data:
+          effect: Day
+          transition: 2
+        target:
+          device_id:
+          - fe10d6fbd8fea654e0a804b8df37355e
+          - 82905c77b5a4913bb0d18519a267bcbe
+          - f97f4ed86cda87d80ecd8bef08c14e23
+        action: light.turn_on
+      else:
+      - data:
+          effect: Night
+          transition: 2
+        target:
+          device_id:
+          - fe10d6fbd8fea654e0a804b8df37355e
+          - 82905c77b5a4913bb0d18519a267bcbe
+          - f97f4ed86cda87d80ecd8bef08c14e23
+        action: light.turn_on
+  mode: single
+- id: '1694934955275'
+  alias: '[開關雙控]'
+  description: 牆壁開關雙控組合
+  trigger:
+  - platform: device
+    type: turned_on
+    device_id: c14638b95fb031b8f0e7aa2b64090f9f
+    entity_id: 7cdf801ef8f087e88da8a28315da57a5
+    domain: switch
+    id: 餐廳燈
+  - platform: device
+    type: turned_on
+    device_id: b6e06eff71a4adda33bc4724dd742e55
+    entity_id: 0d445be51dcdd802e0d18e786143920a
+    domain: switch
+    id: 軌道燈
+  - platform: device
+    type: turned_on
+    device_id: 6345367a393c1cca293661889ae78546
+    entity_id: cc5d67fb3b1c0ae9e0b0c0c9308536e9
+    domain: switch
+    id: 廚房燈
+  - platform: device
+    type: turned_on
+    device_id: b6e06eff71a4adda33bc4724dd742e55
+    entity_id: 3f68a6df5b5e78c54e150cd965dcdcbd
+    domain: switch
+    id: 客廳燈
+  - platform: device
+    type: turned_on
+    device_id: c14638b95fb031b8f0e7aa2b64090f9f
+    entity_id: e9f3ccd05a31a47e11be61a6d5c00d02
+    domain: switch
+    id: 書房燈
+  condition: []
+  action:
+  - if:
+    - condition: trigger
+      id:
+      - 軌道燈
+    then:
+    - service: light.toggle
+      data: {}
+      target:
+        entity_id:
+        - light.ke_ting_gui_dao_deng
+    - type: turn_off
+      device_id: b6e06eff71a4adda33bc4724dd742e55
+      entity_id: 0d445be51dcdd802e0d18e786143920a
+      domain: switch
+  - if:
+    - condition: trigger
+      id:
+      - 餐廳燈
+    then:
+    - service: light.toggle
+      data: {}
+      target:
+        entity_id:
+        - light.can_zhuo_diao_deng
+    - type: turn_off
+      device_id: c14638b95fb031b8f0e7aa2b64090f9f
+      entity_id: 7cdf801ef8f087e88da8a28315da57a5
+      domain: switch
+  - if:
+    - condition: trigger
+      id:
+      - 廚房燈
+    then:
+    - service: light.toggle
+      data: {}
+      target:
+        entity_id:
+        - light.chu_fang_kan_deng_2
+    - type: turn_off
+      device_id: 6345367a393c1cca293661889ae78546
+      entity_id: cc5d67fb3b1c0ae9e0b0c0c9308536e9
+      domain: switch
+  - if:
+    - condition: trigger
+      id:
+      - 客廳燈
+    then:
+    - service: light.toggle
+      data: {}
+      target:
+        entity_id:
+        - light.ke_ting_xi_ding_deng
+    - type: turn_off
+      device_id: b6e06eff71a4adda33bc4724dd742e55
+      entity_id: 3f68a6df5b5e78c54e150cd965dcdcbd
+      domain: switch
+  - if:
+    - condition: trigger
+      id:
+      - 主臥走道
+    then:
+    - service: light.toggle
+      data: {}
+      target:
+        entity_id:
+        - light.zhu_wo_zou_dao_deng_2
+  - if:
+    - condition: trigger
+      id:
+      - 主臥燈
+    then:
+    - service: light.toggle
+      data: {}
+      target:
+        entity_id:
+        - light.zhu_wo_xi_ding_deng_2
+  - if:
+    - condition: trigger
+      id:
+      - 書房燈
+    then:
+    - service: light.toggle
+      data: {}
+      target:
+        entity_id:
+        - light.shu_gui_kan_deng
+    - type: turn_off
+      device_id: c14638b95fb031b8f0e7aa2b64090f9f
+      entity_id: e9f3ccd05a31a47e11be61a6d5c00d02
+      domain: switch
+  mode: single
+- id: '1700876766465'
+  alias: 玄關燈控制
+  description: 玄關燈聯動人在感測器
+  trigger:
+  - type: occupied
+    platform: device
+    device_id: 7872874a2f6c61a99d4943a6c8303e3b
+    entity_id: 3e1b98a4ff288f2f36fae870b4bdec6d
+    domain: binary_sensor
+    id: 有人
+  - type: not_occupied
+    platform: device
+    device_id: 7872874a2f6c61a99d4943a6c8303e3b
+    entity_id: 3e1b98a4ff288f2f36fae870b4bdec6d
+    domain: binary_sensor
+    id: 無人
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+  condition: []
+  action:
+  - if:
+    - condition: trigger
+      id:
+      - 有人
+    then:
+    - service: light.turn_on
+      data: {}
+      target:
+        entity_id:
+        - light.entryway_light
+        - light.xuan_guan_deng
+    else:
+    - service: light.turn_off
+      data: {}
+      target:
+        entity_id:
+        - light.entryway_light
+        - light.xuan_guan_deng
+  mode: restart
+- id: '1701960165387'
+  alias: DPN watchdog
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.ping_dpn
+    from: 'on'
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  condition: []
+  action:
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.smartplug1
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.smartplug1
+  - service: notify.notify
+    data:
+      message: DPN斷線
+      title: DPN斷線
+  mode: single
+- id: '1701962228566'
+  alias: Manual Polling Enterty
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /2
+  condition: []
+  action:
+  - service: homeassistant.update_entity
+    target:
+      entity_id: binary_sensor.ping_dpn
+    data: {}
+  mode: single
+- id: '1705327289903'
+  alias: 客浴風機
+  description: 客浴風機開啟30分鐘後自動關閉
+  trigger:
+  - platform: device
+    type: turned_on
+    device_id: 0e97341322c5adb9e9684ad94ad9c5f9
+    entity_id: d81d06b1565f2d10af14d6a9e5c0ad91
+    domain: fan
+    for:
+      hours: 0
+      minutes: 30
+      seconds: 0
+    id: BySwitchOn
+  - type: occupied
+    platform: device
+    device_id: 82e46966697e5ac6b35f9cb20bf7616e
+    entity_id: 5dccf466d35545fc317bdd861e2bdba4
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 3
+      seconds: 0
+    id: ByPresenceTime
+  condition: []
+  action:
+  - if:
+    - condition: trigger
+      id:
+      - BySwitchOn
+    then:
+    - service: fan.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: fan.ke_yu_kai_guan
+  - if:
+    - condition: trigger
+      id:
+      - ByPresenceTime
+    then:
+    - service: fan.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: fan.ke_yu_kai_guan
+  mode: single
+- id: '1705754026355'
+  alias: 魚缸插座定時
+  description: ''
+  triggers:
+  - at: '19:30:00'
+    id: 'On'
+    trigger: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  - at: '22:00:00'
+    id: 'Off'
+    trigger: time
+  - at: '19:30:00'
+    id: On-weekend
+    trigger: time
+    weekday:
+    - sun
+    - sat
+  conditions: []
+  actions:
+  - if:
+    - condition: trigger
+      id:
+      - 'On'
+    then:
+    - metadata: {}
+      data: {}
+      target:
+        entity_id: switch.0x00158d00023a9dd2_plug
+      action: switch.turn_on
+    else: []
+  - if:
+    - condition: trigger
+      id:
+      - 'Off'
+    then:
+    - metadata: {}
+      data: {}
+      target:
+        entity_id: switch.0x00158d00023a9dd2_plug
+      action: switch.turn_off
+  - if:
+    - condition: and
+      conditions:
+      - condition: trigger
+        id:
+        - On-weekend
+      - condition: time
+        weekday:
+        - sun
+        - sat
+    then:
+    - metadata: {}
+      data: {}
+      target:
+        entity_id: switch.0x00158d00023a9dd2_plug
+      action: switch.turn_on
+  mode: single
+- id: '1706415476228'
+  alias: 客浴燈光控制
+  description: 人在感測器自動開關燈
+  trigger:
+  - type: occupied
+    platform: device
+    device_id: 82e46966697e5ac6b35f9cb20bf7616e
+    entity_id: 5dccf466d35545fc317bdd861e2bdba4
+    domain: binary_sensor
+    id: 有人
+  - type: not_occupied
+    platform: device
+    device_id: 82e46966697e5ac6b35f9cb20bf7616e
+    entity_id: 5dccf466d35545fc317bdd861e2bdba4
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+    id: 無人
+  condition: []
+  action:
+  - if:
+    - condition: trigger
+      id:
+      - 有人
+    then:
+    - service: light.turn_on
+      metadata: {}
+      data: {}
+      target:
+        area_id: ke_yu
+  - if:
+    - condition: trigger
+      id:
+      - 無人
+    then:
+    - service: light.turn_off
+      target:
+        area_id: ke_yu
+      data: {}
+  mode: single

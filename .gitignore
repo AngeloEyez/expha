@@ -1,0 +1,14 @@
+# 核心隱私檔案
+secrets.yaml
+
+# 資料庫與日誌
+*.db
+*.db-shm
+*.db-wal
+*.log
+*.log.*
+
+# 備忘與暫存
+__pycache__/
+.DS_Store
+.storage/

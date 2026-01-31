@@ -1,0 +1,24 @@
+HomeLightsExcludeEntryway:
+    name: Home Lights Exclude Entryway
+    entities:
+      - switch.28d12723480c_channel_2 #儲藏室燈
+      - switch.28d1272b80c2_channel_2 #客廳吸頂燈
+      - switch.28d1272b80c2_channel_1 #客廳軌道燈
+      - switch.28d127234ffc_channel_1 #走道燈
+      - switch.28d127234ffc_channel_2 #書櫃崁燈
+      - switch.28d127234ffc_channel_3 #餐桌吊燈
+      - switch.28d127237a3e_channel_3 #前陽台燈
+    #   - switch.28d127233670_channel_1 #主臥走道燈
+    #   - switch.28d1272365c8_channel_2 #主臥吸頂燈
+      - switch.28d127233662_channel_3 #廚房吧檯燈
+      - switch.28d127233662_channel_1 #廚房吧檯燈
+      - switch.28d127233662_channel_2 #廚房崁燈
+      - light.yeelink_ceiling22_c087_light_2 #次臥吸頂燈
+      - light.bedsidelamp #主臥床頭燈
+      
+HomeLights:
+    name: Home Lights
+    entities:
+      - switch.28d12723480c_channel_1  #玄關燈
+      - group.HomeLightsExcludeEntryway
+      

@@ -1,0 +1,19 @@
+light.celing13:
+  support_brightness: 'true'
+  support_color_temp: 'true'
+  min_color_temp: '2700'
+  max_color_temp: '6500'
+
+
+#讓插座用integration算出的kWh可以加入能源面板
+sensor.smartplug1_energy:
+  device_class: energy
+  
+sensor.smartplug2_energy:
+  device_class: energy
+  
+sensor.smartplug3_energy:
+  device_class: energy
+  
+sensor.smartplug4_energy:
+  device_class: energy

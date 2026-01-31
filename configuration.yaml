@@ -1,0 +1,148 @@
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+homeassistant:
+  customize: !include customize.yaml
+  
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 172.30.33.0/24
+    - 192.168.1.0/24
+    
+lovelace:
+  resources:
+    - url: /local/multiple-entity-row.js?v=4.4.1
+      type: module
+
+light:
+### 玄關 #################################
+ - platform: switch
+   name: "玄關燈"
+   entity_id: switch.28d12723480c_channel_1
+ - platform: switch
+   name: "儲藏室燈"
+   entity_id: switch.28d12723480c_channel_2
+### 客廳 #################################   
+ - platform: switch
+   name: "客廳吸頂燈"
+   entity_id: switch.28d1272b80c2_channel_2
+ - platform: switch
+   name: "客廳軌道燈"
+   entity_id: switch.28d1272b80c2_channel_1
+ - platform: switch
+   name: "走道燈"
+   entity_id: switch.28d127234ffc_channel_1
+ - platform: switch
+   name: "書櫃崁燈"
+   entity_id: switch.28d127234ffc_channel_2
+ - platform: switch
+   name: "餐桌吊燈"
+   entity_id: switch.28d127234ffc_channel_3
+ - platform: switch
+   name: "前陽台燈"
+   entity_id: switch.28d127237a3e_channel_3
+### 主臥 #################################
+#  - platform: switch
+#   name: "主臥走道燈"
+#   entity_id: switch.28d127233670_channel_1
+#  - platform: switch
+#   name: "主臥吸頂燈"
+#   entity_id: switch.28d1272365c8_channel_2
+### 廚房 #################################
+ - platform: switch
+   name: "廚房吧檯燈"
+   entity_id: switch.28d127233662_channel_3
+ - platform: switch
+   name: "後陽台燈"
+   entity_id: switch.28d127233662_channel_1
+ - platform: switch
+   name: "廚房崁燈"
+   entity_id: switch.28d127233662_channel_2
+   
+   
+sensor:
+ - platform: template
+   sensors:
+     smartplug1_voltage:
+       unique_id: '8bb4fd0b-41d9-4ac2-8790-7a2815d5ac73'
+       friendly_name: "伺服器_Voltage"
+       value_template: >-
+         {{ states.switch.smartplug1.attributes.voltage }}
+       unit_of_measurement: 'V'
+     smartplug1_current:
+       unique_id: 'b4e03c7a-a833-4189-a84f-33d7af65339f'
+       friendly_name: "伺服器_Current"
+       value_template: >-
+         {{ states.switch.smartplug1.attributes.current }}
+       unit_of_measurement: 'mA'
+     smartplug1_current_consumption:
+       unique_id: 'fd2bd952-649f-4d4d-84e7-0d281e6415da'
+       friendly_name: "伺服器_Power"
+       value_template: >-
+         {{ states.switch.smartplug1.attributes.current_consumption }}
+       unit_of_measurement: 'W'   
+     smartplug2_voltage:
+       unique_id: '59074ffc-dffc-4bd9-bca5-de6e7b80ec31'
+       friendly_name: "冰箱_Voltage"
+       value_template: >-
+         {{ states.switch.smartplug2.attributes.voltage }}
+       unit_of_measurement: 'V'
+     smartplug2_current:
+       unique_id: '03108ffc-2cb0-4c9f-8800-a97d7ec5e7e8'
+       friendly_name: "冰箱_Current"
+       value_template: >-
+         {{ states.switch.smartplug2.attributes.current }}
+       unit_of_measurement: 'mA'
+     smartplug2_current_consumption:
+       unique_id: '009e4ac7-917c-41ad-a2c8-466fd38fd436'
+       friendly_name: "冰箱_Power"
+       value_template: >-
+         {{ states.switch.smartplug2.attributes.current_consumption }}
+       unit_of_measurement: 'W'
+     smartplug3_voltage:
+       unique_id: '5fece903-062d-4482-995d-60abe6684496'
+       friendly_name: "洗衣機_Voltage"
+       value_template: >-
+         {{ states.switch.smartplug3.attributes.voltage }}
+       unit_of_measurement: 'V'
+     smartplug3_current:
+       unique_id: '30c1be6b-9f94-4eb7-bde3-54c6425eca66'
+       friendly_name: "洗衣機_Current"
+       value_template: >-
+         {{ states.switch.smartplug3.attributes.current }}
+       unit_of_measurement: 'mA'
+     smartplug3_current_consumption:
+       unique_id: '6ffc1d31-4232-4d7c-8865-0dea02e2fa77'
+       friendly_name: "洗衣機_Power"
+       value_template: >-
+         {{ states.switch.smartplug3.attributes.current_consumption }}
+       unit_of_measurement: 'W'   
+     smartplug4_voltage:
+       unique_id: '8922e192-5db9-4a7d-8063-50af163be049'
+       friendly_name: "SmartPlug4_Voltage"
+       value_template: >-
+         {{ states.switch.smartplug4.attributes.voltage }}
+       unit_of_measurement: 'V'
+     smartplug4_current:
+       unique_id: 'cf0ee7e5-4c50-47f9-b973-aae2c9ca39cb'
+       friendly_name: "SmartPlug4_Current"
+       value_template: >-
+         {{ states.switch.smartplug4.attributes.current }}
+       unit_of_measurement: 'mA'
+     smartplug4_current_consumption:
+       unique_id: '757bcae0-2558-447a-928b-9767895adf7d'
+       friendly_name: "SmartPlug4_Power"
+       value_template: >-
+         {{ states.switch.smartplug4.attributes.current_consumption }}
+       unit_of_measurement: 'W'
