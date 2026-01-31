@@ -40,4 +40,17 @@ DEVICES = [{
         # 橙光亮度調整
         MathConv("brightness_orange", "number", mi="10.p.4", min=0, max=100, entity=ENTITY_CONFIG),
     ],
-}]
+}, {
+    27151: ["Linptech", "Human Presence Sensor ES5(Side Mounted)", "linp.sensor_occupy.es5b"],
+    "spec": [
+        BoolConv("occupancy", "binary_sensor", mi="2.p.1078"),
+        BaseConv("illuminance", "sensor", mi="2.p.1005"),
+        BaseConv("has_someone_duration", "sensor", mi="2.p.1081", entity={"units": UNIT_MINUTES, "icon": "mdi:timer"}),
+        MathConv("no_one_duration", "sensor", mi="2.p.1082", min=1, max=120, entity={"units": UNIT_MINUTES, "icon": "mdi:timer-off"}),
+        MapConv("no_one_duration", mi="2.p.1078", map={1: 0}),
+        MapConv("has_someone_duration", mi="2.p.1078", map={0: 0}),
+        BoolConv("customized-property-2", "binary_sensor", mi="5.p.1019"),
+        MapConv("no_one_duration", mi="5.p.1019", map={1: 0}),
+        MapConv("has_someone_duration", mi="5.p.1019", map={0: 0}),
+    ],    
+}] + DEVICES
