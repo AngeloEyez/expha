@@ -7,9 +7,10 @@ secrets.yaml
 *.db-wal
 *.log
 *.log.*
+*.lock
 
 # 備忘與暫存
 __pycache__/
 .DS_Store
 .storage/
-.lock
+
