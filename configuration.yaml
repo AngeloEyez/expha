@@ -5,7 +5,7 @@ default_config:
 tts:
   - platform: google_translate
 
-# --- 自動化設定：關鍵修正區 ---
+# --- 自動化設定： ---
 automation: !include automations.yaml # UI 專用，所有在網頁改的都會存到這裡
 automation manual: !include_dir_merge_list automations # 手動分類的 YAML 放這裡
 
@@ -15,6 +15,8 @@ scene: !include scenes.yaml
 
 homeassistant:
   customize: !include customize.yaml
+  allowlist_external_dirs: # 允許外部目錄 for folder_watcher
+    - /config
 
 http:
   use_x_forwarded_for: true
@@ -31,12 +33,6 @@ lovelace:
 # 監控 config 資料夾下的檔案變動, 並且自動 git push
 # ///////////////////////////////////////////////////////
 # 啟用 folder_watcher (監控檔案變動)
-folder_watcher:
-  - folder: /config
-    patterns:
-      - "*.yaml"
-      - "*.json"
-      - "*.conf"
 
 # 設定 shell_command (連結腳本),建立一個服務讓 automation 可以呼叫
 shell_command:
