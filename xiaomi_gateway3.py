@@ -69,16 +69,11 @@ DEVICES = [{
         ConstConv("action", mi="5.e.2", value=BUTTON_2_DOUBLE),
         ConstConv("action", mi="5.e.3", value=BUTTON_2_HOLD),
         
-        # --- 指示燈與設定 ---
-        BaseConv("led", "switch", mi="8.p.1"),
         # --- 斷電記憶 ---
         # 0: On (通電開), 1: Off (通電關), 2: Restore (保持斷電前狀態)
         MapConv("default_status1", "select", mi="13.p.1", map={0: "On", 1: "Off", 2: "Restore"}),
         MapConv("default_status2", "select", mi="14.p.1", map={0: "On", 1: "Off", 2: "Restore"}),
         
-        # --- 亮度調整 ---
-        MathConv("brightness_white", "number", mi="10.p.3", min=0, max=100, entity=ENTITY_CONFIG),
-        MathConv("brightness_orange", "number", mi="10.p.4", min=0, max=100, entity=ENTITY_CONFIG),
     ],
 }, {
     # 科米其 牆壁開關 - KeMiQi M10 - 3 Key (PDID: 15081)
@@ -110,17 +105,12 @@ DEVICES = [{
         ConstConv("action", mi="7.e.2", value=BUTTON_3_DOUBLE),
         ConstConv("action", mi="7.e.3", value=BUTTON_3_HOLD),
         
-        # --- 硬體控制與設定 (SIID 8, 10) ---
-        BaseConv("led", "switch", mi="8.p.1"),
         # --- 斷電記憶 ---
         # 0: On (通電開), 1: Off (通電關), 2: Restore (保持斷電前狀態)
         MapConv("default_status1", "select", mi="17.p.1", map={0: "On", 1: "Off", 2: "Restore"}),
         MapConv("default_status2", "select", mi="18.p.1", map={0: "On", 1: "Off", 2: "Restore"}),
         MapConv("default_status3", "select", mi="19.p.1", map={0: "On", 1: "Off", 2: "Restore"}),
         
-        # --- 亮度調整 (標記為設定實體) ---
-        MathConv("brightness_white", "number", mi="10.p.3", min=0, max=100, entity=ENTITY_CONFIG),
-        MathConv("brightness_orange", "number", mi="10.p.4", min=0, max=100, entity=ENTITY_CONFIG),
     ],
 }, {
     27151: ["Linptech", "Human Presence Sensor ES5(Side Mounted)", "linp.sensor_occupy.es5b"],
