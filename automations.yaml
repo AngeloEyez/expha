@@ -211,15 +211,14 @@
 - id: '1700876766465'
   alias: 玄關燈控制
   description: 玄關燈聯動人在感測器
-  trigger:
+  triggers:
   - type: occupied
-    platform: device
     device_id: 7872874a2f6c61a99d4943a6c8303e3b
     entity_id: 3e1b98a4ff288f2f36fae870b4bdec6d
     domain: binary_sensor
     id: 有人
+    trigger: device
   - type: not_occupied
-    platform: device
     device_id: 7872874a2f6c61a99d4943a6c8303e3b
     entity_id: 3e1b98a4ff288f2f36fae870b4bdec6d
     domain: binary_sensor
@@ -228,26 +227,25 @@
       hours: 0
       minutes: 0
       seconds: 10
-  condition: []
-  action:
+    trigger: device
+  conditions: []
+  actions:
   - if:
     - condition: trigger
       id:
       - 有人
     then:
-    - service: light.turn_on
-      data: {}
+    - data: {}
       target:
         entity_id:
-        - light.entryway_light
-        - light.xuan_guan_deng
+        - light.xuan_guan_3jian_switch_1
+      action: light.turn_on
     else:
-    - service: light.turn_off
-      data: {}
+    - data: {}
       target:
         entity_id:
-        - light.entryway_light
-        - light.xuan_guan_deng
+        - light.xuan_guan_3jian_switch_1
+      action: light.turn_off
   mode: restart
 - id: '1701960165387'
   alias: DPN watchdog
