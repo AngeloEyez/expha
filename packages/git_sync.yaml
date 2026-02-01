@@ -34,7 +34,7 @@ automation:
       # 推送通知 (請確保你的手機實體名稱正確)
       - service: notify.mobile_app_sm_g9810
         data:
-          title: "Git 自動備份成功"
-          message: "最新的組態變更已成功推送到 GitHub expha 倉庫。"
+          title: "已成功推送到 GitHub expha 倉庫"
+          message: "變更檔案: \n{{ trigger.event.data.file }}"
 
     mode: restart
