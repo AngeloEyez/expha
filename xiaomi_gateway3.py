@@ -46,48 +46,77 @@ DEVICES = [{
         MathConv("brightness_orange", "number", mi="10.p.4", min=0, max=100, entity=ENTITY_CONFIG),
     ],
 }, {
-    # 科米其 牆壁開關 - KeMiQi M10 - 2 Key
-    15080: ["科米其", "Double Wall Switch M10", "M10-2Key"],
+    # 科米其 牆壁開關 - KeMiQi M10 - 2 Key (PDID: 15080)
+    # https://home.miot-spec.com/spec/kemiqi.switch.kmw13
+    15080: ["科米其", "Double Wall Switch M10", "M10-2Key", "kemiqi.switch.kmw13"],
     "spec": [
+        # --- 實體開關通道 ---
         BaseConv("switch_1", "switch", mi="2.p.1"),
         BaseConv("switch_2", "switch", mi="3.p.1"),
+        
+        # --- 模式選擇 (0: 有線+無線, 1: 純無線) ---
         MapConv("mode_1", "select", mi="2.p.2", map={0: "Wired And Wireless", 1: "Wireless"}),
         MapConv("mode_2", "select", mi="3.p.2", map={0: "Wired And Wireless", 1: "Wireless"}),
+        
+        # --- 按鍵動作 ---
         BaseConv("action", "sensor"),
-        ConstConv("action", mi="5.e.1", value=BUTTON_1_SINGLE),
-        ConstConv("action", mi="5.e.2", value=BUTTON_1_DOUBLE),
-        ConstConv("action", mi="5.e.3", value=BUTTON_1_HOLD),
-        ConstConv("action", mi="6.e.1", value=BUTTON_2_SINGLE),
-        ConstConv("action", mi="6.e.2", value=BUTTON_2_DOUBLE),
-        ConstConv("action", mi="6.e.3", value=BUTTON_2_HOLD),
+        # 按鈕 1 (SIID 4)
+        ConstConv("action", mi="4.e.1", value=BUTTON_1_SINGLE),
+        ConstConv("action", mi="4.e.2", value=BUTTON_1_DOUBLE),
+        ConstConv("action", mi="4.e.3", value=BUTTON_1_HOLD),
+        # 按鈕 2 (SIID 5)
+        ConstConv("action", mi="5.e.1", value=BUTTON_2_SINGLE),
+        ConstConv("action", mi="5.e.2", value=BUTTON_2_DOUBLE),
+        ConstConv("action", mi="5.e.3", value=BUTTON_2_HOLD),
+        
+        # --- 指示燈與設定 ---
         BaseConv("led", "switch", mi="8.p.1"),
+        # 補足：斷電記憶 (SIID 10, PIID 1)
+        BaseConv("power_memory", "switch", mi="10.p.1"),
+        
+        # --- 亮度調整 ---
         MathConv("brightness_white", "number", mi="10.p.3", min=0, max=100, entity=ENTITY_CONFIG),
         MathConv("brightness_orange", "number", mi="10.p.4", min=0, max=100, entity=ENTITY_CONFIG),
     ],
 }, {
-    # 科米其 牆壁開關 - KeMiQi M10 - 3 Key
-    15081: ["科米其", "Triple Wall Switch M10", "M10-3Key"],
+    # 科米其 牆壁開關 - KeMiQi M10 - 3 Key (PDID: 15081)
+    # https://home.miot-spec.com/spec/kemiqi.switch.kmw14
+    15081: ["科米其", "Triple Wall Switch M10", "M10-3Key", "kemiqi.switch.kmw14"],
     "spec": [
+        # --- 實體開關通道 (SIID 2, 3, 4) ---
         BaseConv("switch_1", "switch", mi="2.p.1"),
         BaseConv("switch_2", "switch", mi="3.p.1"),
         BaseConv("switch_3", "switch", mi="4.p.1"),
+        
+        # --- 模式選擇 (0: 有線+無線, 1: 純無線) ---
         MapConv("mode_1", "select", mi="2.p.2", map={0: "Wired And Wireless", 1: "Wireless"}),
         MapConv("mode_2", "select", mi="3.p.2", map={0: "Wired And Wireless", 1: "Wireless"}),
         MapConv("mode_3", "select", mi="4.p.2", map={0: "Wired And Wireless", 1: "Wireless"}),
+        
+        # --- 按鍵動作感測器 (SIID 5, 6, 7) ---
         BaseConv("action", "sensor"),
+        # 按鈕 1 (左)
         ConstConv("action", mi="5.e.1", value=BUTTON_1_SINGLE),
         ConstConv("action", mi="5.e.2", value=BUTTON_1_DOUBLE),
         ConstConv("action", mi="5.e.3", value=BUTTON_1_HOLD),
+        # 按鈕 2 (中)
         ConstConv("action", mi="6.e.1", value=BUTTON_2_SINGLE),
         ConstConv("action", mi="6.e.2", value=BUTTON_2_DOUBLE),
         ConstConv("action", mi="6.e.3", value=BUTTON_2_HOLD),
+        # 按鈕 3 (右) - 修正：三鍵版應為 SIID 7
         ConstConv("action", mi="7.e.1", value=BUTTON_3_SINGLE),
         ConstConv("action", mi="7.e.2", value=BUTTON_3_DOUBLE),
         ConstConv("action", mi="7.e.3", value=BUTTON_3_HOLD),
+        
+        # --- 硬體控制與設定 (SIID 8, 10) ---
         BaseConv("led", "switch", mi="8.p.1"),
+        # 補足：斷電記憶開關
+        BaseConv("power_memory", "switch", mi="10.p.1"),
+        
+        # --- 亮度調整 (標記為設定實體) ---
         MathConv("brightness_white", "number", mi="10.p.3", min=0, max=100, entity=ENTITY_CONFIG),
         MathConv("brightness_orange", "number", mi="10.p.4", min=0, max=100, entity=ENTITY_CONFIG),
-    ],    
+    ],
 }, {
     27151: ["Linptech", "Human Presence Sensor ES5(Side Mounted)", "linp.sensor_occupy.es5b"],
     "spec": [
