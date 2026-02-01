@@ -460,6 +460,6 @@
   - action: light.toggle
     metadata: {}
     target:
-      entity_id: light.ke_ting_xi_ding_deng
+      device_id: 3137ef4a30bb47c6604e13f1281d8630
     data: {}
   mode: single
