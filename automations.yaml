@@ -445,3 +445,25 @@
         area_id: ke_yu
       data: {}
   mode: single
+- id: '1769917367957'
+  alias: 客廳大燈控制
+  description: '- 客廳3鍵_button_2_single : 開關燈'
+  triggers:
+  - alias: 客廳3鍵-button_2_single
+    device_id: d6f4776cd7fc3b882d7b785173f41956
+    domain: xiaomi_gateway3
+    type: action
+    trigger: device
+    state: button_2_single
+  - type: changed_states
+    device_id: 33ad7d95ae00cc8f866abb87b80851d6
+    entity_id: 663fd8c64c0844bf83884ec1ef121cc9
+    domain: switch
+    trigger: device
+  conditions: []
+  actions:
+  - type: toggle
+    device_id: 3137ef4a30bb47c6604e13f1281d8630
+    entity_id: 152f3434f0dff5756d2d1901a9747c01
+    domain: light
+  mode: single
