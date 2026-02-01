@@ -445,3 +445,21 @@
         area_id: ke_yu
       data: {}
   mode: single
+- id: '1769937184007'
+  alias: 燈 | 客廳大燈
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.14d881e479f6_action
+    attribute: action
+    to:
+    - button_3_single
+  conditions: []
+  actions:
+  - action: light.toggle
+    metadata: {}
+    target:
+      entity_id: light.ke_ting_xi_ding_deng
+    data: {}
+  mode: single
