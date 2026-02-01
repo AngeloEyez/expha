@@ -16,7 +16,7 @@ shell_command:
 automation:
   - id: core-git-push
     alias: "CORE | 檔案變動自動同步 GitHub"
-    description: "當設定檔變動後，等待 3 分鐘，若無後續變動則上傳"
+    description: "當設定檔變動後，等待 3 分鐘，若無後續變動則上傳 "
 
     trigger:
       - platform: event
@@ -51,6 +51,17 @@ automation:
           file_name: "{{ trigger_file.split('/')[-1] }}"
           file_ext: "{{ trigger_file.split('.')[-1] if '.' in trigger_file else '無副檔名' }}"
 
+      - service: persistent_notification.create
+        data:
+          title: "Folder Watcher 事件"
+          message: |
+            完整事件資料:
+            {{ trigger.event.data }}
+            
+            檔案: {{ trigger.event.data.file | default('未定義') }}
+            路徑: {{ trigger.event.data.path | default('未定義') }}
+            事件類型: {{ trigger.event.data.event_type | default('未定義') }}
+            
       # --- 防抖 (Debounce) ---
       # 如果在這 3 分鐘內又有變動，這個自動化會被「重新觸發」
       # 我們將執行模式設為 restart，這樣計時器就會重新計算
