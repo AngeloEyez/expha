@@ -17,24 +17,68 @@ automation:
   - id: core-git-push
     alias: "CORE | 檔案變動自動同步 GitHub"
     description: "當設定檔變動後，等待 3 分鐘，若無後續變動則上傳"
+
     trigger:
       - platform: event
         event_type: folder_watcher
+
     condition: []
+
     action:
+      # --- 儲存觸發資訊 ---
+      - variables:
+          trigger_file: "{{ trigger.event.data.file }}"
+          trigger_path: "{{ trigger.event.data.path }}"
+          file_name: "{{ trigger_file.split('/')[-1] }}"
+          file_ext: "{{ trigger_file.split('.')[-1] if '.' in trigger_file else '無副檔名' }}"
+
       # --- 防抖 (Debounce) ---
       # 如果在這 3 分鐘內又有變動，這個自動化會被「重新觸發」
       # 我們將執行模式設為 restart，這樣計時器就會重新計算
       - delay: "00:03:00"
 
-      # 執行上傳腳本
+      # --- 執行上傳腳本並捕獲結果 ---
       - service: shell_command.git_push_auto
-        data: {}
+        response_variable: git_result
 
-      # 推送通知 (請確保你的手機實體名稱正確)
-      - service: notify.mobile_app_sm_g9810
-        data:
-          title: "已成功推送到 GitHub expha 倉庫"
-          message: "變更檔案: \n{{ trigger.event.data.file }}"
+      # --- 根據執行結果發送不同通知 ---
+      - choose:
+          # 情況 1：成功推送 (returncode = 0 且 stdout 包含"成功推送")
+          - conditions:
+              - condition: template
+                value_template: "{{ git_result.returncode == 0 and '成功推送' in git_result.stdout }}"
+            sequence:
+              - service: notify.mobile_app_sm_g9810
+                data:
+                  title: "✅ Git 推送成功"
+                  message: |
+                    觸發檔案: {{ file_name }} (.{{ file_ext }})
+                    完整路徑: {{ trigger_file }}
+
+                    {{ git_result.stdout }}
+
+          # 情況 2：沒有變更需要提交 (returncode = 0 且 stdout 包含"沒有")
+          - conditions:
+              - condition: template
+                value_template: "{{ git_result.returncode == 0 and '沒有' in git_result.stdout }}"
+            sequence:
+              - service: notify.mobile_app_sm_g9810
+                data:
+                  title: "ℹ️ Git 無需推送"
+                  message: |
+                    觸發檔案: {{ file_name }}
+                    {{ git_result.stdout }}
+
+        # 情況 3：執行失敗 (returncode != 0)
+        default:
+          - service: notify.mobile_app_sm_g9810
+            data:
+              title: "❌ Git 推送失敗"
+              message: |
+                觸發檔案: {{ file_name }} (.{{ file_ext }})
+                返回碼: {{ git_result.returncode }}
+
+                錯誤訊息:
+                {{ git_result.stderr }}
 
     mode: restart
