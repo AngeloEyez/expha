@@ -449,12 +449,12 @@
   alias: 客廳大燈控制
   description: '- 客廳3鍵_button_2_single : 開關燈'
   triggers:
-  - device_id: d6f4776cd7fc3b882d7b785173f41956
-    domain: xiaomi_gateway3
-    type: action
+  - alias: 客廳3鍵-button_2_single
+    type: changed_states
+    device_id: d6f4776cd7fc3b882d7b785173f41956
+    entity_id: e8bdbbfdf352bb596cf290adcd228ecc
+    domain: switch
     trigger: device
-    state: button_2_single
-    alias: 客廳3鍵-button_2_single
   conditions: []
   actions:
   - type: toggle
