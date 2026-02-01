@@ -22,7 +22,26 @@ automation:
       - platform: event
         event_type: folder_watcher
 
-    condition: []
+    condition:
+      # 只處理有副檔名的檔案
+      - condition: template
+        value_template: "{{ '.' in trigger.event.data.file.split('/')[-1] }}"
+      
+      # 排除臨時檔案（以 tmp 開頭或包含隨機字串）
+      - condition: template
+        value_template: >
+          {% set filename = trigger.event.data.file.split('/')[-1] %}
+          {{ not filename.startswith('tmp') and 
+             not filename.startswith('.') and
+             not filename.endswith('~') and
+             not filename.endswith('.swp') }}
+      
+      # 只允許特定副檔名（與 folder_watcher 設定一致）
+      - condition: template
+        value_template: >
+          {% set ext = trigger.event.data.file.split('.')[-1] %}
+          {{ ext in ['yaml', 'py', 'json', 'js', 'md', 'conf'] }}
+
 
     action:
       # --- 儲存觸發資訊 ---
