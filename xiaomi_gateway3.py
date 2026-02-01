@@ -94,7 +94,7 @@ DEVICES = [{
         ConstConv("action", mi="6.e.1", value=BUTTON_2_SINGLE),
         ConstConv("action", mi="6.e.2", value=BUTTON_2_DOUBLE),
         ConstConv("action", mi="6.e.3", value=BUTTON_2_HOLD),
-        # 按鈕 3 (右) - 修正：三鍵版應為 SIID 7
+        # 按鈕 3 (右) 
         ConstConv("action", mi="7.e.1", value=BUTTON_3_SINGLE),
         ConstConv("action", mi="7.e.2", value=BUTTON_3_DOUBLE),
         ConstConv("action", mi="7.e.3", value=BUTTON_3_HOLD),

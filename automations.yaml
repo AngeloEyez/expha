@@ -469,3 +469,37 @@
     target:
       device_id: 3137ef4a30bb47c6604e13f1281d8630
   mode: single
+- id: '1769958444083'
+  alias: 晚安
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.8446931fabac_action
+    to:
+    - button_3_single
+  conditions: []
+  actions:
+  - action: light.turn_off
+    metadata: {}
+    target:
+      entity_id:
+      - light.bigliving
+      - light.bedroom2
+    data: {}
+  - action: light.turn_on
+    metadata: {}
+    target:
+      entity_id: light.yeelink_bslamp1_d5cd_light
+    data: {}
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - action: light.turn_off
+    metadata: {}
+    target:
+      entity_id: light.bedroom1
+    data: {}
+  mode: single
