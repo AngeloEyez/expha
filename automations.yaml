@@ -449,17 +449,17 @@
   alias: 燈 | 客廳大燈
   description: ''
   triggers:
-  - type: changed_states
-    device_id: 33ad7d95ae00cc8f866abb87b80851d6
-    entity_id: 17964a3e492aac3917e267c63b21be7a
-    domain: switch
-    trigger: device
   - device_id: d6f4776cd7fc3b882d7b785173f41956
     domain: xiaomi_gateway3
     type: action
     trigger: device
     state: button_2_single
     alias: 客廳3建 action=button_2_single
+  - trigger: state
+    entity_id:
+    - sensor.14d881e479f6_action
+    to:
+    - button_3_single
   conditions: []
   actions:
   - action: light.toggle
