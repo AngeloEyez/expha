@@ -450,9 +450,14 @@
   description: '- 客廳3鍵_button_2_single : 開關燈'
   triggers:
   - alias: 客廳3鍵-button_2_single
-    type: changed_states
     device_id: d6f4776cd7fc3b882d7b785173f41956
-    entity_id: e8bdbbfdf352bb596cf290adcd228ecc
+    domain: xiaomi_gateway3
+    type: action
+    trigger: device
+    state: button_2_single
+  - type: changed_states
+    device_id: 33ad7d95ae00cc8f866abb87b80851d6
+    entity_id: 663fd8c64c0844bf83884ec1ef121cc9
     domain: switch
     trigger: device
   conditions: []
