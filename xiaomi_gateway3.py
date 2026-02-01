@@ -71,8 +71,10 @@ DEVICES = [{
         
         # --- 指示燈與設定 ---
         BaseConv("led", "switch", mi="8.p.1"),
-        # 補足：斷電記憶 (SIID 10, PIID 1)
-        BaseConv("power_memory", "switch", mi="10.p.1"),
+        # --- 斷電記憶 ---
+        # 0: On (通電開), 1: Off (通電關), 2: Restore (保持斷電前狀態)
+        MapConv("default_status1", "select", mi="13.p.1", map={0: "On", 1: "Off", 2: "Restore"}),
+        MapConv("default_status2", "select", mi="14.p.1", map={0: "On", 1: "Off", 2: "Restore"}),
         
         # --- 亮度調整 ---
         MathConv("brightness_white", "number", mi="10.p.3", min=0, max=100, entity=ENTITY_CONFIG),
@@ -110,8 +112,11 @@ DEVICES = [{
         
         # --- 硬體控制與設定 (SIID 8, 10) ---
         BaseConv("led", "switch", mi="8.p.1"),
-        # 補足：斷電記憶開關
-        BaseConv("power_memory", "switch", mi="10.p.1"),
+        # --- 斷電記憶 ---
+        # 0: On (通電開), 1: Off (通電關), 2: Restore (保持斷電前狀態)
+        MapConv("default_status1", "select", mi="17.p.1", map={0: "On", 1: "Off", 2: "Restore"}),
+        MapConv("default_status2", "select", mi="18.p.1", map={0: "On", 1: "Off", 2: "Restore"}),
+        MapConv("default_status3", "select", mi="19.p.1", map={0: "On", 1: "Off", 2: "Restore"}),
         
         # --- 亮度調整 (標記為設定實體) ---
         MathConv("brightness_white", "number", mi="10.p.3", min=0, max=100, entity=ENTITY_CONFIG),
