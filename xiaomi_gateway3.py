@@ -20,12 +20,22 @@ DEVICES = [{
 
         # --- 按鍵動作感測器 ---
         # 根據 Log: siid 6, eiid 1。使用 .p.1 取得 arguments 參數
+        # --- 按鍵動作感測器 (捕捉所有點擊類型) ---
         BaseConv("action", "sensor"),
+        
+        # 單擊 (siid 6, event 1)
         MapConv("action", mi="6.e.1.p.1", map={
-            1: BUTTON_1_SINGLE,
-            2: BUTTON_2_SINGLE,
-            3: BUTTON_3_SINGLE,
-            4: BUTTON_4_SINGLE
+            1: BUTTON_1_SINGLE, 2: BUTTON_2_SINGLE, 3: BUTTON_3_SINGLE, 4: BUTTON_4_SINGLE
+        }),
+        
+        # 雙擊 (siid 6, event 2)
+        MapConv("action", mi="6.e.2.p.1", map={
+            1: BUTTON_1_DOUBLE, 2: BUTTON_2_DOUBLE, 3: BUTTON_3_DOUBLE, 4: BUTTON_4_DOUBLE
+        }),
+        
+        # 長按 (siid 6, event 3)
+        MapConv("action", mi="6.e.3.p.1", map={
+            1: BUTTON_1_HOLD, 2: BUTTON_2_HOLD, 3: BUTTON_3_HOLD, 4: BUTTON_4_HOLD
         }),
 
         # --- 指示燈控制 ---
