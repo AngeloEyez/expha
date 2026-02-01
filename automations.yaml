@@ -95,33 +95,36 @@
 - id: '1640439262774'
   alias: 關閉所有電燈 按鈕動作
   description: ''
-  trigger:
-  - platform: device
-    device_id: 4615f45210087836ebe74fee2431cc8f
+  triggers:
+  - device_id: 4615f45210087836ebe74fee2431cc8f
     domain: xiaomi_gateway3
     type: action
     id: TurnOffAllLight
     state: single
-  - platform: device
-    type: changed_states
-    device_id: 72de1226879d49d0e16175fec30be2b6
-    entity_id: switch.28d12723480c_channel_3
-    domain: switch
-  condition: []
-  action:
+    trigger: device
+  - device_id: 7fa40b842b5b822ab2e73498c03e152e
+    domain: xiaomi_gateway3
+    type: action
+    trigger: device
+    state: button_3_single
+    alias: 玄關3鍵 Action button_3_single
+  conditions: []
+  actions:
   - choose:
     - conditions:
       - condition: trigger
         id: TurnOffAllLight
       sequence:
-      - service: homeassistant.turn_off
+      - action: light.turn_off
+        metadata: {}
         target:
-          entity_id: group.homelights
+          entity_id: light.all
         data: {}
     default:
-    - service: homeassistant.turn_off
+    - action: light.turn_off
+      metadata: {}
       target:
-        entity_id: group.homelightsexcludeentryway
+        entity_id: light.all
       data: {}
   mode: restart
 - id: '1683450231179'
