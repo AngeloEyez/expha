@@ -18,19 +18,19 @@
 - id: '1640350101551'
   alias: 儲藏室 門-燈 聯動
   description: ''
-  trigger:
+  triggers:
   - type: opened
-    platform: device
     device_id: 53e55baa6f02e2d5907fb29626c0f0d1
     entity_id: binary_sensor.e4aaec354309_contact
     domain: binary_sensor
+    trigger: device
   - type: not_opened
-    platform: device
     device_id: 53e55baa6f02e2d5907fb29626c0f0d1
     entity_id: binary_sensor.e4aaec354309_contact
     domain: binary_sensor
-  condition: []
-  action:
+    trigger: device
+  conditions: []
+  actions:
   - choose:
     - conditions:
       - type: is_open
@@ -39,17 +39,15 @@
         entity_id: binary_sensor.e4aaec354309_contact
         domain: binary_sensor
       sequence:
-      - service: light.turn_on
+      - data: {}
+        action: light.turn_on
         target:
-          entity_id:
-          - light.chu_cang_shi_deng
-        data: {}
+          entity_id: light.xuan_guan_3jian_switch_2
     default:
-    - service: light.turn_off
+    - data: {}
+      action: light.turn_off
       target:
-        entity_id:
-        - light.chu_cang_shi_deng
-      data: {}
+        entity_id: light.xuan_guan_3jian_switch_2
   mode: restart
 - id: '1640351800992'
   alias: 大門關閉-關玄關燈
@@ -486,6 +484,7 @@
       entity_id:
       - light.bigliving
       - light.bedroom2
+      - light.bedroom1
     data: {}
   - action: light.turn_on
     metadata: {}
@@ -502,4 +501,78 @@
     target:
       entity_id: light.bedroom1
     data: {}
-  mode: single
+  mode: restart
+- id: '1770039588522'
+  alias: 主浴控制
+  description: ''
+  triggers:
+  - type: occupied
+    device_id: 99a42a6c3e98ae1199d2e4607e6523af
+    entity_id: 45824c136daddb27b855f46723ce9a86
+    domain: binary_sensor
+    trigger: device
+    id: 有人
+  - type: not_occupied
+    device_id: 99a42a6c3e98ae1199d2e4607e6523af
+    entity_id: 45824c136daddb27b855f46723ce9a86
+    domain: binary_sensor
+    trigger: device
+    id: 無人
+  conditions: []
+  actions:
+  - if:
+    - condition: trigger
+      id:
+      - 有人
+    then:
+    - if:
+      - type: is_illuminance
+        condition: device
+        device_id: 99a42a6c3e98ae1199d2e4607e6523af
+        entity_id: 07c61e77976157d8c523c0d87f111cf7
+        domain: sensor
+        below: 50
+        alias: 亮度在...之下
+      then:
+      - if:
+        - condition: time
+          after: '23:00:00'
+        then:
+        - type: turn_on
+          device_id: b060fd2d48c5e7df446c501c600498ff
+          entity_id: 806506ee9f263aa94a77f9d23d3df74e
+          domain: light
+        else:
+        - action: light.turn_on
+          metadata: {}
+          target:
+            entity_id: light.zhu_yu_deng
+          data: {}
+    else:
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 30
+        milliseconds: 0
+    - type: turn_off
+      device_id: b060fd2d48c5e7df446c501c600498ff
+      entity_id: 806506ee9f263aa94a77f9d23d3df74e
+      domain: light
+    - type: turn_off
+      device_id: b060fd2d48c5e7df446c501c600498ff
+      entity_id: 89c6bff0535dcdbd2e61514d95116812
+      domain: switch
+    - type: turn_off
+      device_id: b060fd2d48c5e7df446c501c600498ff
+      entity_id: f3240cbc68888e285fe6cda08a7908e0
+      domain: switch
+    - type: turn_off
+      device_id: b060fd2d48c5e7df446c501c600498ff
+      entity_id: aaa27559db4cb6e77b8d056989255505
+      domain: switch
+    - action: light.turn_off
+      metadata: {}
+      target:
+        entity_id: light.zhu_yu_deng
+      data: {}
+  mode: restart
