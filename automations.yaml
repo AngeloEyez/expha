@@ -536,7 +536,8 @@
       then:
       - if:
         - condition: time
-          after: '23:00:00'
+          after: '22:30:00'
+          before: 06:45:00
         then:
         - type: turn_on
           device_id: b060fd2d48c5e7df446c501c600498ff
