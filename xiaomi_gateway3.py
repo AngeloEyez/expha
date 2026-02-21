@@ -2,6 +2,49 @@
 from custom_components.xiaomi_gateway3.core.devices import *
 
 DEVICES = [{
+    # Aqara D100 智能推拉鎖 (ZNMS20LM)
+    # https://home.miot-spec.com/spec?type=urn:miot-spec-v2:device:lock:0000A038:lumi-bacn01:1
+    3051: ["Aqara", "Door Lock D100", "ZNMS20LM", "lumi.lock.bacn01"],
+    "spec": [
+        # --- 電池資訊 (SIID 4) ---
+        # 4.p.1: 電池電量百分比 (0-100)
+        BaseConv("battery", "sensor", mi="4.p.1"),
+
+        # --- 門鎖狀態 (SIID 2) ---
+        # 2.p.1: 操作方式 (0:藍牙外側, 1:密碼, 2:指紋, 4:鑰匙, 6:NFC, 7:一次性密碼, 9:手動外側, 10:手動內側, 11:自動)
+        MapConv("method", "sensor", mi="2.p.1", map={0: "BLE Outdoor", 1: "Password", 2: "Fingerprint", 4: "Key", 6: "NFC", 7: "One-time Password", 9: "Manual Outdoor", 10: "Manual Indoor", 11: "Automatic"}),
+        
+        # 2.p.2: 操作者 ID
+        BaseConv("key_id", "sensor", mi="2.p.2"),
+        
+        # 2.p.3: 門鎖異常狀態 (0:多次密碼錯誤, 1:多次指紋錯誤, 3:防撬報警, 8:未上鎖超時, 10:室內布防狀態下開鎖, 11:多次解鎖錯誤, 12:多次NFC錯誤, 16:指紋模組異常, 19:機械故障)
+        MapConv("error", "sensor", mi="2.p.3", map={0: "Frequent Wrong Password", 1: "Frequent Wrong Fingerprint", 3: "Lockpicking", 8: "Timeout Not Locked", 10: "Arming State Unlocked Indoor", 11: "Frequent Wrong Unlock", 12: "Frequent Wrong NFC", 16: "Abnormal Fingerprint Sensor", 19: "Mechanical Fault"}),
+        
+        # --- 門狀態 (SIID 5) ---
+        # 5.p.2: 門異常狀態 (0:開門, 2:開門超時)
+        MapConv("door_error", "sensor", mi="5.p.2", map={0: "Open Door", 2: "Open Over Time"}),
+
+        # --- 觸發事件 ---
+        BaseConv("action", "sensor"),
+        # 2.e.1: 開鎖
+        ConstConv("action", mi="2.e.1", value="Lock Opened"),
+        # 2.e.2: 上鎖
+        ConstConv("action", mi="2.e.2", value="Lock Locked"),
+        # 2.e.3: 反鎖
+        ConstConv("action", mi="2.e.3", value="Back Locking"),
+        # 2.e.4: 門鎖異常發生
+        ConstConv("action", mi="2.e.4", value="Exception Occurred"),
+        # 5.e.1: 門異常發生
+        ConstConv("action", mi="5.e.1", value="Door Exception Occurred"),
+        
+        # --- 以下為騙過 UI 用的定義，不對應實體 mi 地址，僅供 UI 掃描 ---
+        ConstConv("action", value="Lock Opened"),
+        ConstConv("action", value="Lock Locked"),
+        ConstConv("action", value="Back Locking"),
+        ConstConv("action", value="Exception Occurred"),
+        ConstConv("action", value="Door Exception Occurred"),
+    ],
+}, {
     # 领普智能墙壁开关（四键）
     # https://home.miot-spec.com/spec/linp.switch.t2dbw4
     26373: ["Linptech", "T2 4-Key Wall Switch", "linp.switch.t2dbw4"],
