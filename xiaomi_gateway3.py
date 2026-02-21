@@ -12,24 +12,24 @@ DEVICES = [{
         BLEDoor("door", mi=7),
         BLELock("lock", mi=11),
         
+        # --- 藍牙狀態回報 (mi=4106 電池) ---
+        BLEByteConv("battery", "sensor", mi=4106),
+
         # --- 門狀態與操作者屬性 (從 BLE 解碼器提取) ---
+        # 真正的門磁開關狀態是由 BLEDoor 解碼為 'contact' 屬性
         BaseConv("contact", "binary_sensor"),
         BaseConv("method", "sensor"),
         BaseConv("error", "sensor"),
         BaseConv("key_id", "sensor"),
 
-        # 藍牙狀態回報 (mi=4106 電池, mi=4110 鎖狀態, mi=4111 門狀態)
-        BLEByteConv("battery", "sensor", mi=4106),
-        BLEMapConv("lock", "binary_sensor", mi=4110, map={"00": True, "01": False}),
-        BLEMapConv("door", "binary_sensor", mi=4111, map={"00": True, "01": False}),
-
         # --- 觸發事件 (透過 mibeacon 文字回饋) ---
+        # 捕捉 action 大類 (如 'door', 'lock', 'fingerprint')
         BaseConv("action", "sensor"),
         
-        # --- 獨立訊息產生實體 (具備 Enum 特性供下拉選單使用) ---
+        # --- 獨立訊息文字實體 (具備真實 Enum 特性供 HA 自動化下拉選單使用) ---
         BaseConv("message", "sensor", entity={
-            "device_class": "enum",
-            "options": [
+            "class": "enum",
+            "_attr_options": [
                 # Fingerprint
                 "Match successful", "Match failed", "Timeout", "Low quality", "Insufficient area", "Skin is too dry", "Skin is too wet",
                 # Door
