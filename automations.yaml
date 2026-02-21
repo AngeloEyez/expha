@@ -94,12 +94,6 @@
   alias: 關閉所有電燈 按鈕動作
   description: ''
   triggers:
-  - device_id: 4615f45210087836ebe74fee2431cc8f
-    domain: xiaomi_gateway3
-    type: action
-    id: TurnOffAllLight
-    state: single
-    trigger: device
   - device_id: 7fa40b842b5b822ab2e73498c03e152e
     domain: xiaomi_gateway3
     type: action
@@ -476,6 +470,11 @@
     - sensor.8446931fabac_action
     to:
     - button_3_single
+  - device_id: 4615f45210087836ebe74fee2431cc8f
+    domain: xiaomi_gateway3
+    type: action
+    state: single
+    trigger: device
   conditions: []
   actions:
   - action: light.turn_off
@@ -526,13 +525,13 @@
       - 有人
     then:
     - if:
-      - type: is_illuminance
+      - alias: 亮度在...之下
+        type: is_illuminance
         condition: device
         device_id: 99a42a6c3e98ae1199d2e4607e6523af
         entity_id: 07c61e77976157d8c523c0d87f111cf7
         domain: sensor
-        below: 50
-        alias: 亮度在...之下
+        below: 35
       then:
       - if:
         - condition: time
