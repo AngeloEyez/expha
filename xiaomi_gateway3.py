@@ -26,33 +26,18 @@ DEVICES = [{
         # --- 觸發事件 (透過 mibeacon 文字回饋) ---
         BaseConv("action", "sensor"),
         
-        # --- 以下為騙過 UI 用的定義，讓 Automation 自動生成下拉選項 ---
-        # 來自 BLE_FINGERPRINT_ACTION
-        ConstConv("action", value="Match successful"),
-        ConstConv("action", value="Match failed"),
-        ConstConv("action", value="Timeout"),
-        ConstConv("action", value="Low quality"),
-        ConstConv("action", value="Insufficient area"),
-        ConstConv("action", value="Skin is too dry"),
-        ConstConv("action", value="Skin is too wet"),
-        # 來自 BLE_DOOR_ACTION
-        ConstConv("action", value="Door is open"),
-        ConstConv("action", value="Door is closed"),
-        ConstConv("action", value="Timeout is not closed"),
-        ConstConv("action", value="Knock on the door"),
-        ConstConv("action", value="Breaking the door"),
-        ConstConv("action", value="Door is stuck"),
-        # 來自 BLE_LOCK_ACTION
-        ConstConv("action", value="Unlock outside the door"),
-        ConstConv("action", value="Lock"),
-        ConstConv("action", value="Turn on anti-lock"),
-        ConstConv("action", value="Turn off anti-lock"),
-        ConstConv("action", value="Unlock inside the door"),
-        ConstConv("action", value="Lock inside the door"),
-        ConstConv("action", value="Turn on child lock"),
-        ConstConv("action", value="Turn off child lock"),
-        ConstConv("action", value="Lock outside the door"),
-        ConstConv("action", value="Abnormal"),
+        # --- 獨立訊息產生實體 (具備 Enum 特性供下拉選單使用) ---
+        BaseConv("message", "sensor", entity={
+            "device_class": "enum",
+            "options": [
+                # Fingerprint
+                "Match successful", "Match failed", "Timeout", "Low quality", "Insufficient area", "Skin is too dry", "Skin is too wet",
+                # Door
+                "Door is open", "Door is closed", "Timeout is not closed", "Knock on the door", "Breaking the door", "Door is stuck",
+                # Lock
+                "Unlock outside the door", "Lock", "Turn on anti-lock", "Turn off anti-lock", "Unlock inside the door", "Lock inside the door", "Turn on child lock", "Turn off child lock", "Lock outside the door", "Abnormal"
+            ]
+        }),
     ],
 }, {
     # 领普智能墙壁开关（四键）
