@@ -16,31 +16,38 @@ shell_command:
 automation:
   - id: core-git-push
     alias: "CORE | 檔案變動自動同步 GitHub"
-    description: "當設定檔變動後，等待 3 分鐘，若無後續變動則上傳 "
+    description: "當設定檔變動後，等待 3 秒，若無後續變動則上傳 "
 
     trigger:
       - platform: event
         event_type: folder_watcher
 
     condition:
-      # 只處理有副檔名的檔案
-      - condition: template
-        value_template: "{{ '.' in trigger.event.data.file.split('/')[-1] }}"
-      
-      # 排除臨時檔案（以 tmp 開頭或包含隨機字串）
       - condition: template
         value_template: >
-          {% set filename = trigger.event.data.file.split('/')[-1] %}
-          {{ not filename.startswith('tmp') and 
-             not filename.startswith('.') and
-             not filename.endswith('~') and
-             not filename.endswith('.swp') }}
+          {% set name = trigger.event.data.file %}
+          {% set ext = name.split('.')[-1] | lower %}
+          {{ '.' in name and ext in ['yaml', 'py', 'json', 'js', 'md', 'conf'] }}    
+        
+    #   # 只處理有副檔名的檔案
+    #   - condition: template
+    #     value_template: "{{ '.' in trigger.event.data.file.split('/')[-1] }}"
       
-      # 只允許特定副檔名（與 folder_watcher 設定一致）
-      - condition: template
-        value_template: >
-          {% set ext = trigger.event.data.file.split('.')[-1] %}
-          {{ ext in ['yaml', 'py', 'json', 'js', 'md', 'conf'] }}
+    #   # 排除臨時檔案（以 tmp 開頭或包含隨機字串）
+    #   - condition: template
+    #     value_template: >
+    #       {% set filename = trigger.event.data.file.split('/')[-1] %}
+    #       {{ not filename.startswith('tmp') and 
+    #          not filename.startswith('.') and
+    #          not filename.endswith('~') and
+    #          not filename.endswith('.swp') }}
+      
+    #   # 只允許特定副檔名（與 folder_watcher 設定一致）
+    #   - condition: template
+    #     value_template: >
+    #       {% set ext = trigger.event.data.file.split('.')[-1] %}
+    #       {{ ext in ['yaml', 'py', 'json', 'js', 'md', 'conf'] }}
+    
 
 
     action:
@@ -63,9 +70,9 @@ automation:
             事件類型: {{ trigger.event.data.event_type | default('未定義') }}
             
       # --- 防抖 (Debounce) ---
-      # 如果在這 3 分鐘內又有變動，這個自動化會被「重新觸發」
+      # 如果在這 3 秒內又有變動，這個自動化會被「重新觸發」
       # 我們將執行模式設為 restart，這樣計時器就會重新計算
-      - delay: "00:03:00"
+      - delay: "00:00:03"
 
       # --- 執行上傳腳本並捕獲結果 ---
       - service: shell_command.git_push_auto
