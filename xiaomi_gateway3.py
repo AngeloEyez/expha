@@ -6,6 +6,16 @@ DEVICES = [{
     # https://home.miot-spec.com/spec?type=urn:miot-spec-v2:device:lock:0000A038:lumi-bacn01:1
     3051: ["Aqara", "Door Lock D100", "ZNMS20LM", "lumi.lock.bacn01"],
     "spec": [
+        # --- 藍牙廣播事件 (mibeacon) ---
+        # 門鎖開關、指紋與解鎖狀態事件 (eid: 6, 7, 11)
+        BLEFinger("fingerprint", mi=6),
+        BLEDoor("door", mi=7),
+        BLELock("lock", mi=11),
+        # 藍牙狀態回報 (mi=4106 電池, mi=4110 鎖狀態, mi=4111 門狀態)
+        BLEByteConv("battery", "sensor", mi=4106),
+        BLEMapConv("lock", "binary_sensor", mi=4110, map={"00": True, "01": False}),
+        BLEMapConv("door", "binary_sensor", mi=4111, map={"00": True, "01": False}),
+
         # --- 電池資訊 (SIID 4) ---
         # 4.p.1: 電池電量百分比 (0-100)
         BaseConv("battery", "sensor", mi="4.p.1"),
