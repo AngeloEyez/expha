@@ -72,23 +72,26 @@
 - id: '1640353743986'
   alias: 大門從外打開-開燈
   description: ''
-  trigger:
-  - platform: state
-    entity_id: sensor.e228af50d523_action
-    to: lock
-  condition:
-  - condition: template
-    value_template: '{{ trigger.to_state.attributes[''action_id''] == 0}}'
-  action:
+  triggers:
+  - entity_id:
+    - sensor.e228af50d523_message
+    to:
+    - Unlock outside the door
+    trigger: state
+  conditions: []
+  actions:
+  - condition: sun
+    before: sunrise
+    after: sunset
   - delay:
       hours: 0
       minutes: 0
       seconds: 0
       milliseconds: 500
-  - service: light.turn_on
+  - data: {}
+    action: light.turn_on
     target:
-      entity_id: light.entryway_light
-    data: {}
+      entity_id: light.ke_ting_3jian_switch_1
   mode: restart
 - id: '1640439262774'
   alias: 關閉所有電燈 按鈕動作
